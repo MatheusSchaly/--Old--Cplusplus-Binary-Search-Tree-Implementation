@@ -3,7 +3,7 @@
  *
  * Author:      Matheus Schaly
  * Created on:  Aug 14, 2017 
- * Description: Implements the Doubly Linked List object
+ * Description: Implements the Binary Search Tree List object
  */
 
 #include "BinarySearchTree.h"
@@ -28,28 +28,82 @@ void BinarySearchTree::insert(int data) {
 		setRoot(newNode);
 		return;
 	}
-	Node *temp1 = getRoot();
-	Node *temp2 = getRoot();
-	while (temp1 != NULL) {
-		temp2 = temp1;
-		if (temp1 -> getData() < data) {
-			temp1 = temp1 -> getRight();
+	Node *curr = getRoot();
+	Node *prev = getRoot();
+	while (curr != NULL) {
+		prev = curr;
+		if (curr -> getData() < data) {
+			curr = curr -> getRight();
 		}
-		else if (temp1 -> getData() > data) {
-			temp1 = temp1 -> getLeft();
+		else if (curr -> getData() > data) {
+			curr = curr -> getLeft();
 		}
 		else {
 			cout << "Your data already exist in the BST";
 			return;
 		}
 	}
-	if (temp2 -> getData() < data) {
-		temp2 -> setRight(newNode);
+	if (prev -> getData() < data) {
+		prev -> setRight(newNode);
 	}
 	else {
-		temp2 -> setLeft(newNode);
+		prev -> setLeft(newNode);
 	}
 	return;
+}
+
+void BinarySearchTree::remove(int data) {
+	if (getRoot() == NULL) {
+		return;
+	}
+	Node *curr = getRoot();
+	Node *prev = getRoot();
+	bool leftChild;
+	while (curr != NULL) {
+		if (curr -> getData() < data) {
+			curr = curr -> getRight();
+			leftChild = false;
+		}
+		else if (curr -> getData() > data) {
+			curr = curr -> getLeft();
+			leftChild = true;
+		}
+		else {
+			break;
+		}
+		prev = curr;
+	}
+	if (curr == NULL) {
+		return;
+	}
+	if (curr -> getRight() == NULL && curr -> getLeft() == NULL) {
+		if (leftChild) {
+			prev -> setLeft(NULL);
+		}
+		else {
+			prev -> setRight(NULL);
+		}
+		delete curr;
+	}
+	else if (curr -> getRight() == NULL) {
+		if (leftChild) {
+			prev -> setLeft(curr -> getLeft());
+		}
+		else {
+			prev -> setRight(curr -> getLeft());
+		}
+		delete curr;
+	}
+	else if (curr -> getLeft() == NULL) {
+		if (leftChild) {
+			prev -> setRight(curr -> getRight());
+		}
+		else {
+			prev -> setLeft(curr -> getRight());
+		}
+		delete curr;
+	}
+	// TODO
 }
 
 bool BinarySearchTree::search(int data) {

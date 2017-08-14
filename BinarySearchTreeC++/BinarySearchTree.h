@@ -22,6 +22,7 @@ public:
 	void setRoot(Node *node);
 	Node* getRoot();
 	void insert(int data);
+	void remove(int data);
 	bool search(int data);
 };
 
