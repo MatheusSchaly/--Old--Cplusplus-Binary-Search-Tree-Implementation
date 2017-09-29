@@ -103,7 +103,9 @@ void BinarySearchTree::remove(int data) {
 		}
 		delete curr;
 	}
-	// TODO
+	else {
+
+	}
 }
 
 bool BinarySearchTree::search(int data) {
